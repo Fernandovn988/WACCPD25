@@ -33,13 +33,13 @@ def process_outputs(output_nn):
 
 def load_data(x_train, y_train, x_test, y_test):
     x_train = torch.load(x_train).float()
-    x_train = ds.from_pt_tensor(x_train, shape=(8, 1))
+    x_train = ds.data.tensor.from_pt_tensor(x_train, shape=(8, 1))
     y_train = torch.load(y_train).float()
-    y_train = ds.from_pt_tensor(y_train, shape=(8, 1))
+    y_train = ds.data.tensor.from_pt_tensor(y_train, shape=(8, 1))
     x_test = torch.load(x_test)
-    x_test = ds.from_pt_tensor(x_test, shape=(8, 1))
+    x_test = ds.data.tensor.from_pt_tensor(x_test, shape=(8, 1))
     y_test = torch.load(y_test)
-    y_test = ds.from_pt_tensor(y_test, shape=(8, 1))
+    y_test = ds.data.tensor.from_pt_tensor(y_test, shape=(8, 1))
     torch.cuda.empty_cache()
     return x_train, y_train, x_test, y_test
 
@@ -107,7 +107,7 @@ def evaluate_main_network(x_test, y_test, torch_model):
             torch.cuda.empty_cache()
     outputs = torch.cat(outputs)
     y_test = torch.cat([tens for tensor in y_test.collect() for tens in tensor])
-    y_test = ds.array(y_test, block_size=(15000, 10))
+    y_test = ds.data.array.array(y_test, block_size=(15000, 10))
     y_test = y_test.collect()
     outputs = process_outputs(outputs)
     outputs = outputs.detach().cpu().numpy()
@@ -122,14 +122,10 @@ if __name__ == "__main__":
     x_train, y_train, x_test, y_test = load_data(sys.argv[1], 
             sys.argv[2], sys.argv[3], sys.argv[4])
 
-    model_path = "./weights/mlp_mnist.pth"
     # Original model timing
-    num_epochs = 4
     # Get smaller model
     torch_model, training_time = train_main_network(x_train, y_train, x_test, y_test)
 
-    train_data = []
-    test_data = []
     print("Evaluate Original Accuracy, MSE or MAE", flush=True)
     print("Time used to train NN: " + str(training_time))
     evaluate_main_network(x_test, y_test, torch_model)

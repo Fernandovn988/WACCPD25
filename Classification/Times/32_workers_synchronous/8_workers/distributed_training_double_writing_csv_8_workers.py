@@ -5,10 +5,8 @@ import pandas as pd
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
-from dislib.preprocessing import MinMaxScaler
 import math
-from dislib.pytorch import EncapsulatedFunctionsDistributedPytorch
-from dislib.data.array import Array
+from dislib.pytorch.encapsulated_functions_distributed import EncapsulatedFunctionsDistributedPytorch
 from dislib.data.tensor import Tensor
 import sys
 from pycompss.api.constraint import constraint
@@ -37,15 +35,15 @@ def load_data(x_train, y_train, x_test, y_test):
     x_train_1 = torch.load(x_train).float()
     x_train_2 = torch.load(x_train).float()
     x_train = torch.cat((x_train_1, x_train_2))
-    x_train = ds.from_pt_tensor(x_train, shape=(64, 1))
+    x_train = ds.data.tensor.from_pt_tensor(x_train, shape=(64, 1))
     y_train_1 = torch.load(y_train).float()
     y_train_2 = torch.load(y_train).float()
     y_train = torch.cat((y_train_1, y_train_2))
-    y_train = ds.from_pt_tensor(y_train, shape=(64, 1))
+    y_train = ds.data.tensor.from_pt_tensor(y_train, shape=(64, 1))
     x_test = torch.load(x_test)
-    x_test = ds.from_pt_tensor(x_test, shape=(8, 1))
+    x_test = ds.data.tensor.from_pt_tensor(x_test, shape=(8, 1))
     y_test = torch.load(y_test)
-    y_test = ds.from_pt_tensor(y_test, shape=(8, 1))
+    y_test = ds.data.tensor.from_pt_tensor(y_test, shape=(8, 1))
     torch.cuda.empty_cache()
     return x_train, y_train, x_test, y_test
 
@@ -89,7 +87,7 @@ def evaluate_main_network(x_test, y_test, torch_model):
             torch.cuda.empty_cache()
     outputs = torch.cat(outputs)
     y_test = torch.cat([tens for tensor in y_test.collect() for tens in tensor])
-    y_test = ds.array(y_test, block_size=(15000, 10))
+    y_test = ds.data.array.array(y_test, block_size=(15000, 10))
     y_test = y_test.collect()
     outputs = process_outputs(outputs)
     outputs = outputs.detach().cpu().numpy()

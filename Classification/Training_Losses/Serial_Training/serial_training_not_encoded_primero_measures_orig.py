@@ -148,8 +148,8 @@ def load_data(x_train, y_train, x_test, y_test):
     y_train = torch.load(y_train)
     x_test = torch.load(x_test)
     y_test = torch.load(y_test)
-    y_test = ds.from_pt_tensor(y_test, shape=(8, 1))
-    x_test = ds.from_pt_tensor(x_test, shape=(8, 1))
+    y_test = ds.data.tensor.from_pt_tensor(y_test, shape=(8, 1))
+    x_test = ds.data.tensor.from_pt_tensor(x_test, shape=(8, 1))
     return x_train, y_train, x_test, y_test
 
 
@@ -262,7 +262,7 @@ def evaluate_main_network(x_test, y_test, torch_model):
             torch.cuda.empty_cache()
     outputs = torch.cat(outputs)
     y_test = torch.cat([tens for tensor in y_test.collect() for tens in tensor])
-    y_test = ds.array(y_test, block_size=(15000, 10))
+    y_test = ds.data.array.array(y_test, block_size=(15000, 10))
     y_test = y_test.collect()
     outputs = process_outputs(outputs)
     outputs = outputs.detach().cpu().numpy()

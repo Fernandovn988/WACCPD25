@@ -6,7 +6,6 @@ import copy
 from pycompss.api.api import compss_wait_on, compss_delete_object
 from dislib.data.tensor import shuffle
 from dislib.pytorch.pytorch_distributed import PytorchDistributed
-from dislib.utils import train_test_split
 import time
 from sklearn.metrics import accuracy_score
 import math
@@ -86,6 +85,9 @@ def pt_aggregateParameters(workers_parameters):
                 workers_parameters[0].dense_neural_network_layers[i].bias = \
                     nn.Parameter(final_added_parameters[aux_j + j])
                 aux_j += 1
+
+    return workers_parameters[0]
+
 def assign_parameters(model, trained_weights):
     j=0
     if hasattr(model, 'neural_network_layers'):

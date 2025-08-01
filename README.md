@@ -1,5 +1,5 @@
 # WACCPD25
-This GitHub repository containd the Artifact corresponding to the article: "Scalable Neural Network Training: Distributed Data-Parallel Approaches", submitted to the WACCPD 2025 workshop.
+This GitHub repository containes the Artifact corresponding to the article: "Scalable Neural Network Training: Distributed Data-Parallel Approaches", submitted to the WACCPD 2025 workshop.
 
 This GitHub repository is divided into two different folders: **Classification** and **Regression**. The experiments evaluate the training times and results obtained by the neural networks on two different problems, one is a classification problem and the other regression. Each folder contains the corresponding experiments.
 

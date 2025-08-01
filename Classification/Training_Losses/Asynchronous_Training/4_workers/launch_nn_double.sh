@@ -19,5 +19,5 @@ enqueue_compss --log_level=off \
        --exec_time=70 \
        --pythonpath=$PWD \
        --worker_in_master_cpus=0 --max_tasks_per_node=80 --num_nodes=2 \
-       distributed_training_double_writing_csv.py
+       distributed_training_double_writing_csv.py $1 $2 $3 $4
 

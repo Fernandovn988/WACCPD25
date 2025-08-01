@@ -6,7 +6,6 @@ import copy
 from pycompss.api.api import compss_wait_on, compss_barrier, compss_delete_object
 from dislib.data.tensor import shuffle
 from dislib.pytorch.pytorch_distributed import PytorchDistributed
-from dislib.utils import train_test_split
 import time
 from sklearn.metrics import accuracy_score
 import math
@@ -87,34 +86,6 @@ def pt_aggregateParameters(workers_parameters):
                     nn.Parameter(final_added_parameters[aux_j + j])
                 aux_j += 1
     return workers_parameters[0]
-
-
-'''def assign_parameters(neural_network, model_parameters):
-    if hasattr(neural_network, 'neural_network_layers'):
-        len_nn = len(neural_network.neural_network_layers)
-        for i in range(len_nn):
-            if hasattr(model_parameters.neural_network_layers[i],
-                        'weight'):
-                neural_network.neural_network_layers[i].weight = \
-                    nn.Parameter(
-                        model_parameters.neural_network_layers[i].
-                        weight.float())
-                neural_network.neural_network_layers[i].bias = \
-                    nn.Parameter(
-                        model_parameters.neural_network_layers[i].bias.
-                        float())
-    if hasattr(neural_network, 'dense_neural_network_layers'):
-        len_nn = len(model_parameters.dense_neural_network_layers)
-        for i in range(len_nn):
-            if hasattr(model_parameters.dense_neural_network_layers[i], 'weight'):
-                neural_network.dense_neural_network_layers[i].weight = \
-                        nn.Parameter(
-                                model_parameters.dense_neural_network_layers[i].weight.float())
-                neural_network.dense_neural_network_layers[i].bias = \
-                        nn.Parameter(
-                                model_parameters.dense_neural_network_layers[i].bias.float())
-    neural_network.to("cpu")
-    return neural_network'''
 
 def assign_parameters(model, trained_weights):
     j=0
