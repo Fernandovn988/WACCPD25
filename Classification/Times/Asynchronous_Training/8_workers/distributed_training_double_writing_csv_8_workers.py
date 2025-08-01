@@ -82,7 +82,7 @@ def evaluate_main_network(x_test, y_test, torch_model):
             torch.cuda.empty_cache()
     outputs = torch.cat(outputs)
     y_test = torch.cat([tens for tensor in y_test.collect() for tens in tensor])
-    y_test = ds.data.array.array(y_test, block_size=(15000, 10))
+    y_test = ds.array(y_test, block_size=(15000, 10))
     y_test = y_test.collect()
     outputs = process_outputs(outputs)
     outputs = outputs.detach().cpu().numpy()
