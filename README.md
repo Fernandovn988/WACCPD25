@@ -5,7 +5,7 @@ This GitHub repository is divided into two different folders: **Classification**
 
 ## Requirements
 
-In order to reproduce the experiments some requirements should be met.
+In order to reproduce the experiments there are some requirements that should be met.
 
 ### Hardware
 
